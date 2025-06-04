@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio - Tu Casa Familiar{% endblock %}
+
+{% block content %}
+<section>
+  <h2>Bienvenido a Tu Casa Familiar</h2>
+  <p>Organiza tu hogar y cuida de tu familia con nuestras herramientas sencillas y colaborativas.</p>
+  {% if not current_user.is_authenticated %}
+  <p><a href="{{ url_for('auth.login') }}">Inicia sesión</a> o <a href="{{ url_for('auth.register') }}">regístrate</a> para comenzar.</p>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+
+{% block title %}Monedas de {{ user.username }}{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h2 class="titulo">💰 Monedas de {{ user.username }}</h2>
+
+  <div class="saldo">
+    <p>Saldo actual:</p>
+    <div class="cantidad-monedas">{{ saldo }}</div>
+  </div>
+
+  <h3 class="subtitulo">Historial de transacciones</h3>
+  <table class="tabla-transacciones">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Cantidad</th>
+        <th>Motivo</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for tx in transacciones %}
+      <tr>
+        <td>{{ tx.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+        <td class="cantidad {% if tx.amount > 0 %}positivo{% else %}negativo{% endif %}">
+          {{ '+' if tx.amount > 0 else '' }}{{ tx.amount }}
+        </td>
+        <td>{{ tx.reason }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="3" class="no-transacciones">No hay transacciones aún.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <p class="enlace-recompensas">
+    <a href="{{ url_for('recompensas') }}">➡️ Ir a tienda de recompensas</a>
+  </p>
+
+  {% if user.id in ranking_tareas_usuario %}
+  <div class="tareas-frecuentes">
+    <h3 class="subtitulo">📋 Tareas más realizadas</h3>
+    <ul>
+      {% for descripcion, veces in ranking_tareas_usuario[user.id]["tareas"] %}
+      <li>{{ descripcion }} — <strong>{{ veces }}</strong> veces</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+</div>
+
+<style>
+  .container {
+    max-width: 700px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: linear-gradient(to right, #af7ac5, #a3e4d7);
+    border-radius: 1rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #34495e;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  }
+
+  .titulo {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .saldo {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .saldo p {
+    font-size: 1.25rem;
+    margin: 0;
+  }
+
+  .cantidad-monedas {
+    background: white;
+    color: #34495e;
+    font-weight: 700;
+    font-size: 2.5rem;
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    min-width: 100px;
+    text-align: center;
+  }
+
+  .subtitulo {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    border-bottom: 2px solid #af7ac5;
+    padding-bottom: 0.3rem;
+  }
+
+  .tabla-transacciones {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  .tabla-transacciones thead {
+    background: #af7ac5;
+    color: white;
+  }
+
+  .tabla-transacciones th,
+  .tabla-transacciones td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+  }
+
+  .tabla-transacciones tbody tr:nth-child(even) {
+    background: #f9f9f9;
+  }
+
+  .cantidad {
+    font-weight: 700;
+  }
+
+  .cantidad.positivo {
+    color: green;
+  }
+
+  .cantidad.negativo {
+    color: red;
+  }
+
+  .no-transacciones {
+    text-align: center;
+    font-style: italic;
+    color: #888;
+  }
+
+  .enlace-recompensas {
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  .enlace-recompensas a {
+    background: #34495e;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: background-color 0.3s ease;
+  }
+
+  .enlace-recompensas a:hover {
+    background: #2c3e50;
+  }
+
+  .tareas-frecuentes {
+    margin-top: 2rem;
+    background: #fefefe;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+  }
+
+  .tareas-frecuentes ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .tareas-frecuentes li {
+    padding: 0.3rem 0;
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .container {
+      padding: 1rem;
+    }
+
+    .titulo {
+      font-size: 1.5rem;
+    }
+
+    .cantidad-monedas {
+      font-size: 2rem;
+      padding: 0.4rem 1rem;
+      min-width: 80px;
+    }
+
+    .subtitulo {
+      font-size: 1.25rem;
+    }
+
+    .tabla-transacciones th,
+    .tabla-transacciones td {
+      padding: 0.5rem 0.75rem;
+    }
+  }
+</style>
+{% endblock %}

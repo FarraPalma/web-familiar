@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Ranking{% endblock %}
+
+{% block content %}
+  <h2>Ranking General por Tareas Completadas</h2>
+  <div class="card">
+    <table style="width: 100%; border-collapse: collapse;">
+      <thead>
+        <tr style="background-color: #af7ac5; color: white;">
+          <th style="padding: 8px; border: 1px solid #ddd;">Usuario</th>
+          <th style="padding: 8px; border: 1px solid #ddd;">Tareas Completadas</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user, total in ranking_total %}
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;">{{ user.username }}</td>
+            <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">{{ total }}</td>
+          </tr>
+        {% else %}
+          <tr><td colspan="2" style="padding: 8px; border: 1px solid #ddd;">No hay datos disponibles.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <hr style="margin: 2rem 0; border: 1px solid #ddd;">
+
+  <h2>Ranking de Tareas Más Realizadas por Usuario</h2>
+
+  {% if ranking_tareas_usuario %}
+    {% for user_id, info in ranking_tareas_usuario.items() %}
+      <h3 style="color: #af7ac5; margin-top: 1.5rem;">{{ info.username }}</h3>
+      <div class="card">
+        <table style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="background-color: #a3e4d7; color: #34495e;">
+              <th style="padding: 8px; border: 1px solid #ddd;">Tarea</th>
+              <th style="padding: 8px; border: 1px solid #ddd;">Veces Completada</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for descripcion, veces in info.tareas %}
+              <tr>
+                <td style="padding: 8px; border: 1px solid #ddd;">{{ descripcion }}</td>
+                <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">{{ veces }}</td>
+              </tr>
+            {% else %}
+              <tr><td colspan="2" style="padding: 8px; border: 1px solid #ddd;">No hay tareas completadas para este usuario.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>No hay usuarios con tareas completadas.</p>
+  {% endif %}
+{% endblock %}
+

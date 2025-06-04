@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Mis Tareas{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+  <h2>📋 Tareas de {{ user.username }}</h2>
+  <p class="subtitle">Marca las tareas que hayas completado para ganar monedas</p>
+
+  {% if tasks %}
+  <ul class="task-list">
+    {% for task in tasks %}
+    <li class="task {{ 'completed' if task.completed else '' }}">
+      <form method="POST" action="{{ url_for('completar_tarea', task_id=task.id) }}">
+        <button type="submit" class="check-btn">{{ '✅' if task.completed else '🔲' }}</button>
+        <span>{{ task.description }}</span>
+        {% if task.completed %}
+          <small class="done-note">Completada</small>
+        {% endif %}
+      </form>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>No tienes tareas asignadas aún.</p>
+  {% endif %}
+</div>
+
+<style>
+.task-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+.task {
+  background: #f4f6f7;
+  border: 2px solid #a3e4d7;
+  padding: 0.8rem 1rem;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  transition: background 0.3s;
+}
+
+.task.completed {
+  background: #d5f5e3;
+  text-decoration: line-through;
+  color: #95a5a6;
+}
+
+.check-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
+.done-note {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: #27ae60;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Bienestar Personal y Familiar{% endblock %}
+
+{% block content %}
+<section>
+  <h2>Bienestar Personal y Familiar</h2>
+  <ul>
+    <li><a href="{{ url_for('seguimiento_entrenamientos') }}">Seguimiento de entrenamientos</a></li>
+    <li><a href="{{ url_for('registro_alimentacion') }}">Registro de alimentación</a></li>
+    <li><a href="{{ url_for('estadisticas_usuario') }}">Estadísticas por usuario</a></li>
+    <li><a href="{{ url_for('multiusuario') }}">Sistema multiusuario</a></li>
+  </ul>
+</section>
+{% endblock %}

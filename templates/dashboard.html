@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block title %}Panel Principal{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+  <h2>👋 ¡Hola, {{ user.username }}!</h2>
+  <p class="subtitle">Bienvenido a tu centro de control familiar</p>
+
+  <div class="grid">
+    <a href="{{ url_for('lista_compra') }}" class="card animated">
+      <span class="emoji">🛒</span>
+      <h3>Lista de la Compra</h3>
+      <p>Comparte y gestiona lo que falta en casa</p>
+    </a>
+    <a href="{{ url_for('facturas') }}" class="card animated">
+      <span class="emoji">📁</span>
+      <h3>Facturas</h3>
+      <p>Sube y revisa los gastos del hogar</p>
+    </a>
+    <a href="{{ url_for('calendario_tareas') }}" class="card animated">
+      <span class="emoji">📅</span>
+      <h3>Calendario</h3>
+      <p>Organiza las tareas de toda la familia</p>
+    </a>
+    <a href="{{ url_for('notas') }}" class="card animated">
+      <span class="emoji">📝</span>
+      <h3>Notas</h3>
+      <p>Publica recordatorios o mensajes familiares</p>
+    </a>
+  </div>
+</div>
+
+<style>
+.dashboard {
+  text-align: center;
+  animation: fadeIn 0.8s ease-in-out;
+  padding: 1rem 0;
+}
+
+.subtitle {
+  margin-top: -10px;
+  font-size: 1.1rem;
+  color: #7f8c8d;
+  margin-bottom: 2rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  padding: 0 1rem;
+}
+
+.card {
+  background: linear-gradient(135deg, #ffffff, #f9f9f9);
+  border: 2px solid #a3e4d7;
+  border-radius: 1rem;
+  padding: 1.2rem;
+  color: #34495e;
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+  background: linear-gradient(135deg, #a3e4d7, #af7ac5);
+  color: white;
+}
+
+.card h3 {
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.card p {
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+}
+
+.emoji {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .card h3 {
+    font-size: 1.2rem;
+  }
+
+  .card p {
+    font-size: 1rem;
+  }
+
+  .emoji {
+    font-size: 2.5rem;
+  }
+}
+</style>
+{% endblock %}
+

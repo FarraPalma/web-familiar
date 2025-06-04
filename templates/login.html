@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+  body {
+    background: linear-gradient(to right, #af7ac5, #76d7c4);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+  }
+
+  .login-container {
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(52, 73, 94, 0.2);
+    padding: 30px;
+    width: 90%;
+    max-width: 400px;
+    margin: 10vh auto;
+    text-align: center;
+    animation: slideIn 0.8s ease-out;
+    position: relative;
+  }
+
+  .login-container::before {
+    content: "🔐";
+    font-size: 40px;
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  h2 {
+    color: #34495e;
+    margin-bottom: 20px;
+    animation: fadeIn 1s ease-in;
+    font-size: 1.8rem;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 14px;
+    margin: 12px 0;
+    border: 2px solid #76d7c4;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease-in-out;
+  }
+
+  input:focus {
+    border-color: #af7ac5;
+    outline: none;
+    box-shadow: 0 0 10px rgba(175, 122, 197, 0.5);
+  }
+
+  button {
+    background-color: #af7ac5;
+    color: white;
+    border: none;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-size: 1rem;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+  }
+
+  button:hover {
+    background-color: #8e44ad;
+  }
+
+  .register-link {
+    margin-top: 20px;
+    color: #34495e;
+    font-size: 0.9rem;
+  }
+
+  .register-link a {
+    color: #76d7c4;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .register-link a:hover {
+    text-decoration: underline;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @media (max-width: 480px) {
+    .login-container {
+      padding: 20px;
+      margin: 15vh auto;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    input,
+    button {
+      font-size: 0.95rem;
+      padding: 12px;
+    }
+
+    .register-link {
+      font-size: 0.85rem;
+    }
+  }
+</style>
+
+<div class="login-container">
+  <h2>Inicia sesión 🚪</h2>
+  <form action="{{ url_for('auth.login') }}" method="POST">
+    <input type="text" name="username" placeholder="Usuario 🧑‍💻" required>
+    <input type="password" name="password" placeholder="Contraseña 🔒" required>
+    <button type="submit">Entrar ✅</button>
+  </form>
+  <p class="register-link">¿No tienes cuenta? <a href="{{ url_for('auth.register') }}">Regístrate aquí ✍️</a></p>
+</div>
+{% endblock %}

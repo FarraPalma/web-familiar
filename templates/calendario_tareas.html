@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}Calendario de Tareas{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+  <h2>📅 Calendario de Tareas</h2>
+  <p class="subtitle">Marca tus tareas y gana monedas para canjear recompensas</p>
+
+  <div class="grid">
+    <a href="{{ url_for('añadir_tarea') }}" class="card animated">
+      <span class="emoji">✅</span>
+      <h3>Ver Tareas</h3>
+      <p>Consulta tus tareas asignadas y márcalas como completadas</p>
+    </a>
+    <a href="{{ url_for('monedas') }}" class="card animated">
+      <span class="emoji">💰</span>
+      <h3>Mis Monedas</h3>
+      <p>Revisa cuántas monedas has acumulado</p>
+    </a>
+    <a href="{{ url_for('recompensas') }}" class="card animated">
+      <span class="emoji">🎁</span>
+      <h3>Canjear Recompensas</h3>
+      <p>Intercambia monedas por premios</p>
+    </a>
+    <a href="{{ url_for('ranking') }}" class="card animated">
+      <span class="emoji">🏆</span>
+      <h3>Ranking</h3>
+      <p>¿Quién está haciendo más tareas? ¡Descúbrelo!</p>
+    </a>
+  </div>
+</div>
+
+<style>
+.dashboard {
+  text-align: center;
+  animation: fadeIn 0.8s ease-in-out;
+  padding: 1rem 0;
+}
+
+.subtitle {
+  margin-top: -10px;
+  font-size: 1.1rem;
+  color: #7f8c8d;
+  margin-bottom: 2rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  padding: 0 1rem;
+}
+
+.card {
+  background: linear-gradient(135deg, #ffffff, #f9f9f9);
+  border: 2px solid #a3e4d7;
+  border-radius: 1rem;
+  padding: 1.2rem;
+  color: #34495e;
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+  background: linear-gradient(135deg, #a3e4d7, #af7ac5);
+  color: white;
+}
+
+.card h3 {
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.card p {
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+}
+
+.emoji {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .card h3 {
+    font-size: 1.2rem;
+  }
+
+  .card p {
+    font-size: 1rem;
+  }
+
+  .emoji {
+    font-size: 2.5rem;
+  }
+}
+</style>
+{% endblock %}

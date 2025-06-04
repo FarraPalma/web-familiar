@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %}Registro ✨{% endblock %}
+
+{% block content %}
+<div class="register-container">
+  <h2 class="register-title">👤 Crea tu cuenta</h2>
+  <form action="{{ url_for('auth.register') }}" method="POST" class="register-form">
+    <input type="text" name="username" placeholder="👛 Nombre de usuario" required>
+    <input type="password" name="password" placeholder="🔒 Contraseña" required>
+    <button type="submit">🚀 Registrarse</button>
+  </form>
+  <p class="login-link">¿Ya tienes cuenta? <a href="{{ url_for('auth.login') }}">Inicia sesión 🔑</a></p>
+</div>
+
+<style>
+  body {
+    background: linear-gradient(135deg, #af7ac5, #76d7c4);
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    animation: fadeIn 1s ease-in;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .register-container {
+    background-color: white;
+    width: 90%;
+    max-width: 400px;
+    margin: 10vh auto;
+    padding: 2rem;
+    border-radius: 2rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    animation: popIn 0.8s ease-out;
+  }
+
+  @keyframes popIn {
+    0% { transform: scale(0.9); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .register-title {
+    text-align: center;
+    font-size: 2rem;
+    color: #34495e;
+    margin-bottom: 1.5rem;
+    animation: slideIn 0.6s ease-in-out;
+  }
+
+  @keyframes slideIn {
+    from { transform: translateX(-20px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  .register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .register-form input {
+    padding: 1rem;
+    font-size: 1rem;
+    border: 2px solid #af7ac5;
+    border-radius: 1rem;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .register-form input:focus {
+    border-color: #76d7c4;
+    box-shadow: 0 0 5px rgba(118, 215, 196, 0.5);
+  }
+
+  .register-form button {
+    background-color: #34495e;
+    color: white;
+    padding: 1rem;
+    border: none;
+    border-radius: 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+
+  .register-form button:hover {
+    background-color: #2c3e50;
+    transform: scale(1.05);
+  }
+
+  .login-link {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #34495e;
+    animation: fadeIn 1.5s ease;
+  }
+
+  .login-link a {
+    color: #af7ac5;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .login-link a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 480px) {
+    .register-container {
+      padding: 1.5rem;
+      margin: 15vh auto;
+    }
+
+    .register-title {
+      font-size: 1.6rem;
+    }
+
+    .register-form input,
+    .register-form button {
+      font-size: 0.95rem;
+      padding: 0.9rem;
+    }
+
+    .login-link {
+      font-size: 0.85rem;
+    }
+  }
+</style>
+{% endblock %}

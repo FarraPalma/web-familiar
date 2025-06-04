@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% block title %}Lista de la Compra{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h2 class="titulo">☕ Lista de la Compra</h2>
+  <form action="{{ url_for('add_item') }}" method="POST" class="formulario">
+    <input type="text" name="name" placeholder="Añadir producto..." required>
+    <button type="submit">+ Agregar</button>
+  </form>
+
+  <ul class="lista">
+    {% for item in items %}
+    <li class="item">
+      <span id="estado-{{ item.id }}" class="estado estado-{{ item.status }}" onclick='toggleEstado({{ item.id }})'>
+        {% if item.status == 'comprado' %}✅
+        {% elif item.status == 'pronto' %}🕓
+        {% else %}❌
+        {% endif %}
+      </span>
+      <div class="item-text">
+        {{ item.name }} <small>- Añadido por {{ item.added_by }}</small>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+<script>
+function toggleEstado(id) {
+  fetch(`/toggle-item/${id}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ id: id })  // Enviar cuerpo aunque el backend no lo use directamente
+  })
+  .then(response => response.json())
+  .then(data => {
+    const icono = document.getElementById(`estado-${id}`);
+    icono.classList.remove('estado-faltante', 'estado-pronto', 'estado-comprado');
+
+    if (data.status === 'comprado') {
+      icono.textContent = '✅';
+      icono.classList.add('estado-comprado');
+    } else if (data.status === 'pronto') {
+      icono.textContent = '🕓';
+      icono.classList.add('estado-pronto');
+    } else {
+      icono.textContent = '❌';
+      icono.classList.add('estado-faltante');
+    }
+  })
+  .catch(error => console.error('Error:', error));
+}
+</script>
+
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  background: linear-gradient(to right, #af7ac5, #a3e4d7);
+  padding: 2rem;
+  border-radius: 1rem;
+  color: #34495e;
+  font-family: 'Segoe UI', sans-serif;
+  max-width: 700px;
+  margin: auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.titulo {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.formulario {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.formulario input {
+  flex: 1 1 auto;
+  min-width: 60%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 2px solid #af7ac5;
+  border-radius: 0.5rem;
+}
+
+.formulario button {
+  flex: 1 1 auto;
+  min-width: 35%;
+  background: #34495e;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.item {
+  background: white;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: background 0.3s;
+}
+
+.item:hover {
+  background: #f4f4f4;
+}
+
+.estado {
+  cursor: pointer;
+  font-size: 1.4rem;
+  transition: transform 0.2s;
+}
+
+/* Agregamos las clases que usa el JS */
+.estado-comprado {
+  color: green;
+}
+.estado-pronto {
+  color: orange;
+}
+.estado-faltante {
+  color: red;
+}
+
+.estado:hover {
+  transform: scale(1.2);
+}
+
+.item-text {
+  flex: 1;
+  font-size: 1rem;
+  word-break: break-word;
+}
+
+/* 🎯 Responsivo */
+@media (max-width: 480px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .titulo {
+    font-size: 1.5rem;
+  }
+
+  .formulario {
+    flex-direction: column;
+  }
+
+  .formulario input,
+  .formulario button {
+    min-width: 100%;
+    font-size: 1rem;
+  }
+
+  .item {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.75rem;
+  }
+
+  .item-text {
+    font-size: 0.95rem;
+  }
+}
+</style>
+{% endblock %}

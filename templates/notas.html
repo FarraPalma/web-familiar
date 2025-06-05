@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% block title %}Notas y Recordatorios{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+  <h2 class="titulo">🗓️ Calendario de Notas y Recordatorios</h2>
+  <p class="subtitle">Agrega y visualiza recordatorios o citas familiares. Haz clic en una fecha para añadir un evento.</p>
+
+  <div id="calendar"></div>
+
+  <!-- Modal para añadir nota -->
+  <div id="notaModal" class="modal" style="display:none;position:fixed;z-index:1000;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.3);align-items:center;justify-content:center;">
+    <div style="background:white;padding:2rem;border-radius:1rem;max-width:400px;width:90%;box-shadow:0 2px 12px rgba(175,122,197,0.15);position:relative;">
+      <button id="closeModal" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:1.5rem;">&times;</button>
+      <h4>➕ Nueva Nota / Recordatorio</h4>
+      <form id="modalNotaForm" method="POST" action="{{ url_for('agregar_nota') }}">
+        <input type="hidden" name="start" id="modalStart">
+        <input type="hidden" name="end" id="modalEnd">
+        <input type="text" name="title" placeholder="Título" required style="width:100%;margin-bottom:0.5rem;">
+        <textarea name="content" placeholder="Descripción o detalles" required style="min-height:60px;width:100%;margin-bottom:0.5rem;"></textarea>
+        <label>Hora de inicio:</label>
+        <input type="time" id="modalStartTime" style="width:100%;margin-bottom:0.5rem;">
+        <label>Hora de fin (opcional):</label>
+        <input type="time" id="modalEndTime" style="width:100%;margin-bottom:0.5rem;">
+        <button type="submit" style="width:100%;">Guardar Nota</button>
+      </form>
+    </div>
+  </div>
+
+  <h3 class="subtitulo" style="margin-top:2rem;">Notas y recordatorios agendados</h3>
+  <ul class="lista">
+    {% for nota in notas %}
+      <li class="item-tarea">
+        <strong>{{ nota.title }}</strong> <br>
+        <span>{{ nota.content }}</span><br>
+        <small>🕒 {{ nota.start.strftime('%d/%m/%Y %H:%M') }}{% if nota.end %} - {{ nota.end.strftime('%d/%m/%Y %H:%M') }}{% endif %}</small><br>
+        <small>👤 Añadido por: {{ nota.user.username }}</small>
+      </li>
+    {% else %}
+      <li>No hay notas ni recordatorios aún.</li>
+    {% endfor %}
+  </ul>
+</div>
+
+<!-- FullCalendar.io CDN -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+<script type="text/javascript">
+// Escapar el JSON como string seguro para JS
+var calendarEvents = {{ notas_eventos|tojson }};
+document.addEventListener('DOMContentLoaded', function() {
+  var calendarEl = document.getElementById('calendar');
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'dayGridMonth',
+    locale: 'es',
+    height: 600,
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+    },
+    events: calendarEvents,
+    dateClick: function(info) {
+      // Mostrar modal y rellenar fecha seleccionada
+      document.getElementById('notaModal').style.display = 'flex';
+      document.getElementById('modalStart').value = info.dateStr + 'T00:00';
+      document.getElementById('modalEnd').value = '';
+      document.getElementById('modalStartTime').value = '';
+      document.getElementById('modalEndTime').value = '';
+    },
+    eventClick: function(info) {
+      alert(info.event.title + "\n" + info.event.extendedProps.description);
+    }
+  });
+  calendar.render();
+
+  // Modal logic
+  document.getElementById('closeModal').onclick = function() {
+    document.getElementById('notaModal').style.display = 'none';
+  };
+  document.getElementById('notaModal').onclick = function(e) {
+    if (e.target === this) this.style.display = 'none';
+  };
+  document.getElementById('modalNotaForm').onsubmit = function() {
+    // Combinar fecha y hora seleccionada
+    var startDate = document.getElementById('modalStart').value.split('T')[0];
+    var startTime = document.getElementById('modalStartTime').value;
+    var endTime = document.getElementById('modalEndTime').value;
+    if (startTime) {
+      document.getElementById('modalStart').value = startDate + 'T' + startTime;
+    }
+    if (endTime) {
+      document.getElementById('modalEnd').value = startDate + 'T' + endTime;
+    } else {
+      document.getElementById('modalEnd').value = '';
+    }
+    return true;
+  };
+});
+
+// Función para el efecto de desvanecimiento
+function fadeInElement(el) {
+  el.classList.add('fade-in');
+  setTimeout(function() {
+    el.classList.add('visible');
+  }, 10);
+}
+
+// Aplicar fade-in a la sección principal al cargar
+window.addEventListener('DOMContentLoaded', function() {
+  var dashboard = document.querySelector('.dashboard');
+  if (dashboard) fadeInElement(dashboard);
+});
+</script>
+
+<style>
+#calendar {
+  max-width: 900px;
+  margin: 2rem auto;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px rgba(175,122,197,0.10);
+  padding: 1rem;
+}
+@media (max-width: 600px) {
+  #calendar {
+    max-width: 100vw;
+    padding: 0.2rem;
+    font-size: 0.95rem;
+    border-radius: 0.5rem;
+  }
+  .dashboard {
+    padding: 0.5rem;
+  }
+  .modal > div {
+    max-width: 98vw !important;
+    padding: 1rem !important;
+  }
+  .lista .item-tarea {
+    font-size: 0.98rem;
+    padding: 0.5rem 0.5rem;
+  }
+  .subtitulo, .titulo {
+    font-size: 1.1rem;
+  }
+  input, textarea, button, label {
+    font-size: 1rem !important;
+  }
+}
+.lista .item-tarea {
+  background: #f7f9f9;
+  border-left: 4px solid #af7ac5;
+  border-radius: 0.5rem;
+  margin-bottom: 0.7rem;
+  padding: 0.7rem 1rem;
+}
+.fade-in {
+  opacity: 0;
+  transition: opacity 0.5s ease-in;
+}
+.fade-in.visible {
+  opacity: 1;
+}
+</style>
+{% endblock %}

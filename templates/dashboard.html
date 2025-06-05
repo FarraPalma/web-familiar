@@ -3,6 +3,17 @@
 
 {% block content %}
 <div class="dashboard">
+  {% if notas_hoy and notas_hoy|length > 0 %}
+    <div class="alert alert-info fade-in visible" style="margin:1.5rem auto;max-width:500px;">
+      <strong>🔔 Recordatorio para hoy:</strong>
+      <ul style="text-align:left;">
+        {% for nota in notas_hoy %}
+          <li><strong>{{ nota.title }}</strong>: {{ nota.content }} <br><small>🕒 {{ nota.start.strftime('%H:%M') }}{% if nota.end %} - {{ nota.end.strftime('%H:%M') }}{% endif %}</small></li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
   <h2>👋 ¡Hola, {{ user.username }}!</h2>
   <p class="subtitle">Bienvenido a tu centro de control familiar</p>
 

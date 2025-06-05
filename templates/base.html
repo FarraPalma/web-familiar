@@ -66,75 +66,34 @@
       margin: 0 auto;
     }
 
-    h2 {
-      color: #af7ac5;
-      font-size: 1.5rem;
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    li {
-      margin: 1rem 0;
-      font-size: 1.1rem;
-    }
-
-    a {
-      color: #34495e;
-      text-decoration: none;
-    }
-
-    .card {
-      background: #ffffff;
-      padding: 1.5rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .input-group {
-      margin-bottom: 1rem;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 0.3rem;
-    }
-
-    input[type="text"],
-    input[type="password"] {
-      width: 100%;
-      padding: 0.7rem;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-
-    .btn {
-      background: #af7ac5;
-      color: white;
-      padding: 0.8rem 1.5rem;
-      border: none;
-      font-size: 1rem;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      width: 100%;
-      max-width: 300px;
-      margin: 1rem auto;
-      display: block;
-    }
-
-    .btn:hover {
-      background: #9b59b6;
-    }
-
-    .footer-note {
-      margin-top: 2rem;
+    h2, .titulo {
+      background: linear-gradient(90deg, #af7ac5 60%, #a3e4d7 100%);
+      color: white !important;
+      padding: 0.7rem 1.5rem;
+      border-radius: 1.2rem;
+      box-shadow: 0 2px 12px rgba(175,122,197,0.10);
+      margin-bottom: 1.5rem;
+      font-size: 2rem;
       text-align: center;
-      font-size: 0.9rem;
-      color: #7f8c8d;
+      letter-spacing: 1px;
+      font-weight: 700;
+      border: 2px solid #af7ac5;
+      display: inline-block;
+    }
+
+    /* --- Subtítulos destacados globales --- */
+    .subtitle, .subtitulo, p.subtitle, p.subtitulo {
+      background: #f7f9f9;
+      color: #34495e !important;
+      padding: 0.7rem 1.2rem;
+      border-radius: 0.8rem;
+      box-shadow: 0 1px 6px rgba(175,122,197,0.08);
+      margin-bottom: 1.5rem;
+      font-size: 1.1rem;
+      font-weight: 500;
+      display: inline-block;
+      border-left: 6px solid #af7ac5;
+      border-right: 6px solid #a3e4d7;
     }
 
     @media (min-width: 768px) {
@@ -154,6 +113,34 @@
       .btn {
         font-size: 1.1rem;
       }
+    }
+
+    @media (max-width: 600px) {
+      h2, .titulo {
+        font-size: 1.3rem;
+        padding: 0.5rem 0.7rem;
+      }
+      h3, .subtitulo {
+        font-size: 1.05rem;
+        padding: 0.3rem 0.7rem;
+      }
+      .subtitle, .subtitulo, p.subtitle, p.subtitulo {
+        font-size: 0.95rem;
+        padding: 0.4rem 0.7rem;
+      }
+    }
+
+    /* --- Pie de página (footer) vuelve a su estilo original --- */
+    footer.footer-note {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #7f8c8d;
+      background: none;
+      padding: 0;
+      border-top: none;
+      box-shadow: none;
+      letter-spacing: normal;
     }
   </style>
 </head>
